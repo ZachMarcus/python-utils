@@ -7,6 +7,7 @@ class FileComparator(object):
     """
     Class to read in two files and compare them
     Can compare for matching lines or matching hashes
+    TODO: Have it take a function expression for file comparison
     """
     def __init__(self, filePath1, filePath2):
         """
@@ -38,6 +39,9 @@ class FileComparator(object):
         self._fileList1 = self._readInFileToList(self._filePath1)
         self._fileList2 = self._readInFileToList(self._filePath2)
 
+    def inDepthComparison(self):
+        return self.findMatchingLinesAnyOrder()
+
     def findMatchingLinesAnyOrder(self, shouldPrint=False):
         """
         Method to match the lines within files.
@@ -57,7 +61,7 @@ class FileComparator(object):
         return ret
 
     
-    def compareFileHashes(self, stringOfHash="sha1", shouldPrint=True):
+    def compareFileHashes(self, stringOfHash="sha1", shouldPrint=False):
         """
         Method to take the hash of the two files for comparison
         Defaults to the SHA1 hashing algorithm, but the algo can be set to something like:
@@ -79,7 +83,6 @@ class FileComparator(object):
                 buf = f.read()
                 hasher.update(buf)
                 hashes.append(hasher.hexdigest())
-                print(hasher.hexdigest())
         ret = hashes[0] == hashes[1]
         if shouldPrint:
             print("Are hashes the same: " + str(ret))
